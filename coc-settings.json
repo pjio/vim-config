@@ -1,0 +1,50 @@
+{
+    "suggest.autoTrigger": "always",
+    "languageserver": {
+        "dls": {
+            "command": "diagnostic-languageserver",
+            "args": ["--stdio"],
+            "filetypes": ["php"],
+            "initializationOptions": {
+                "linters": {
+                    "phpcs": {
+                        "command": "phpcs",
+                        "debounce": 100,
+                        "rootPatterns": ["composer.json", "composer.lock", "vendor", ".git"],
+                        "args": ["--report=emacs", "-s", "-"],
+                        "offsetLine": 0,
+                        "offsetColumn": 0,
+                        "sourceName": "phpcs",
+                        "formatLines": 1,
+                        "formatPattern": [
+                            "^.*:(\\d+):(\\d+):\\s+(.*)\\s+-\\s+(.*)(\\r|\\n)*$",
+                            {
+                                "line": 1,
+                                "column": 2,
+                                "message": 4,
+                                "security": 3
+                            }
+                        ],
+                        "securities": {
+                            "error": "error",
+                            "warning": "warning"
+                        }
+                    }
+                },
+                "filetypes": {
+                    "php": ["phpcs"]
+                }
+            }
+        }
+    },
+    "python.jediEnabled": false,
+    "diagnostic.messageDelay": 1500,
+    "diagnostic.messageTarget": "echo",
+    "html.filetypes": [
+        "html",
+        "handlebars",
+        "htmldjango",
+        "blade"
+    ],
+    "html.autoClosingTags": false
+}

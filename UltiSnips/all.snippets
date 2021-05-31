@@ -1,0 +1,110 @@
+priority 1
+
+# Regex: Always place the longer pattern first!
+# both work:        "foobar|foo"
+# foobar works not: "foo|foobar"
+
+# Text
+snippet abc "abcdefghijklmnopqrstuvwxyz"
+abcdefghijklmnopqrstuvwxyz$0
+endsnippet
+
+snippet 123 "1234567890"
+1234567890$0
+endsnippet
+
+snippet lorem "Lorem Ipsum - 50 Words"
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+no sea takimata sanctus est Lorem ipsum dolor sit amet.
+endsnippet
+
+
+# comments
+snippet /* "inline comment" w
+/** ${VISUAL}$1 */$9
+endsnippet
+
+snippet /** "multiline comment"
+/**
+ * $1
+ */$9
+endsnippet
+
+snippet '\{' "Singleline curly brackets" r
+{$1}$9
+endsnippet
+
+snippet '\{\}(\)?;?)' "Multiline curly brackets" r
+{
+	$1
+}`!p snip.rv = ');' if match.group(1) else ''`$9
+endsnippet
+
+snippet "\[" "Singleline square brackets" r
+[$1]$9
+endsnippet
+
+snippet "\[\]([;,]?)" "Multiline square brackets" r
+[
+	$1
+]`!p snip.rv = match.group(1)`$9
+endsnippet
+
+snippet "\(" "Singleline round brackets" r
+($1)$9
+endsnippet
+
+snippet "\(\)(;?)" "Multiline round brackets" r
+(
+	$1
+)`!p snip.rv = match.group(1)`$9
+endsnippet
+
+snippet ' "Single Quotes"
+'$1'$9
+endsnippet
+
+snippet "\"" "Double Quotes" r
+"$1"$9
+endsnippet
+
+snippet --- "120 - chars Line"
+------------------------------------------------------------------------------------------------------------------------
+endsnippet
+
+snippet ### "120 # chars Line"
+########################################################################################################################
+endsnippet
+
+# general control structure
+snippet ife "if/else block"
+if ($1) {
+	${2:${VISUAL}}
+} else {
+	$9
+}
+endsnippet
+
+snippet if "if condition"
+if ($1) {
+	${9:${VISUAL}}
+}
+endsnippet
+
+snippet "} *e" "continue with else" r
+} else {
+	$1
+}
+endsnippet
+
+snippet "} *ei" "continue with else if" r
+} else if ($1) {
+	$9
+}
+endsnippet
+
+snippet "<([\w]+)[^>]*>" "Close tag" r
+`!p snip.rv = match.group(0)`$1</`!p snip.rv = match.group(1)`>$9
+endsnippet

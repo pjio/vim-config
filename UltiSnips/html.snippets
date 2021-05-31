@@ -1,0 +1,135 @@
+priority 2
+
+snippet html "html minimal"
+<!DOCTYPE html>
+<html>
+	<head>$1
+	</head>
+	<body>$9
+	</body>
+</html>
+endsnippet
+
+snippet html "html with common head tags"
+<!DOCTYPE html>
+<html lang="en">
+	<head>$1
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="cache-control" content="no-cache"/>
+		<meta http-equiv="expires" content="0"/>
+		<link rel="stylesheet" href="style.css">
+		<script src="script.js"></script>
+	</head>
+	<body>$9
+	</body>
+</html>
+endsnippet
+
+snippet "<!--" "<!-- -->" r
+<!-- ${VISUAL}$1 -->$9
+endsnippet
+
+snippet "(?<=[^ ]) " "$attribute=''" r
+ ${1:${VISUAL}}="${2:${VISUAL}}"
+endsnippet
+
+snippet id "id=''" w
+id="${VISUAL}$1"
+endsnippet
+
+snippet cl "class=''" w
+class="${VISUAL}$1"
+endsnippet
+
+snippet st "style=''" w
+style="${VISUAL}$1"
+endsnippet
+
+
+snippet "<" "<tag></tag>" r
+<$1>${VISUAL}$9</${1/([^ ]*).*/$1/}>
+endsnippet
+
+snippet "<link|link" "<link>" r
+<link rel="$1" href="$2" type="$3"$4>
+endsnippet
+
+snippet "<link|link" "<link> to stylesheet" r
+<link rel="stylesheet" href="$2" type="text/css">
+endsnippet
+
+snippet "<meta|meta" "<meta>" r
+<meta name="$1" content="$2">
+endsnippet
+
+snippet "<script|script" "<script> (external)" r
+<script src="$1" type="text/javascript"></script>
+endsnippet
+
+snippet "<script|script" "<script> (inline)" r
+<script type="text/javascript">
+	${9:${VISUAL}}
+</script>
+endsnippet
+
+snippet "<style|\bstyle" "<style>" r
+<style type="text/css"${1: media="screen"}>
+	${9:${VISUAL}}
+</style>
+endsnippet
+
+snippet "<button|\bbutton|\bb|<b" "<button></button>" r
+<button type="${1:button}"$2>${VISUAL}$9</button>
+endsnippet
+
+snippet "<div|\bdiv|\bd|<d" "<div></div>" r
+<div$1>${VISUAL}$9</div>
+endsnippet
+
+snippet "<p|\bp" "<p>" r
+<p$1>${VISUAL}$9</p>
+endsnippet
+
+snippet "<span|<s|\bspan|\bs" "<span>" r
+<span$1>${VISUAL}$9</span>
+endsnippet
+
+snippet "<input|\binput" "<input>" r
+<input type="$1" name="$2" value="$3"$9>
+endsnippet
+
+snippet "<label|\blabel" "<label>" r
+<label for="$1">$2</label>$9
+endsnippet
+
+snippet "<select|\bselect" "<select>" r
+<select name="$1" id="${2:$1}"$3>
+	${VISUAL}$9
+</select>
+endsnippet
+
+snippet "<option|\boption" "<option>" r
+<option value="${1}">${2:$1}</option>
+endsnippet
+
+snippet "<textarea|<text|\btextarea|\btext" "<textarea>" r
+<textarea name="$1" rows="${2:8}" cols="${3:40}">$9</textarea>
+endsnippet
+
+snippet "<form|\bform" "<form>" r
+<form action="$1" method="${2:POST}">
+	${VISUAL}$9
+</form>
+endsnippet
+
+snippet "<a|\ba" "<a>" r
+<a href="$1"$2>${VISUAL}$9</a>
+endsnippet
+
+snippet "<img|\bimg" "<img>" r
+<img src="${1:http://placekitten.com/$2}" alt="${3:${VISUAL}}"$4>$9
+endsnippet

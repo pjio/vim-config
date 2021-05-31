@@ -1,0 +1,28 @@
+priority 3
+extends html
+
+# php-context
+snippet php "Php embedded in html (multiline)" w
+<?php
+${VISUAL}$9
+?>
+endsnippet
+
+snippet phi "Php embedded in html (singleline)" i
+<?php ${VISUAL}$9 ?>
+endsnippet
+
+snippet phe "Php shorttag echo" i
+<?= ${VISUAL}$9 ?>
+endsnippet
+
+snippet htm "Html embedded in php (multiline)" w
+?>
+$9
+<?php
+endsnippet
+
+snippet hti "Html embedded in php (singleline))" i
+?>$9<?php
+endsnippet
+

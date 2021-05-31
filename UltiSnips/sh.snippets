@@ -1,0 +1,43 @@
+priority 2
+
+snippet if "if condition"
+if [ $1 ]
+then
+	${9:${VISUAL}}
+fi
+endsnippet
+
+snippet ife "if/else condition"
+if [ $1 ]
+then
+	${2:${VISUAL}}
+else
+	$9
+fi
+endsnippet
+
+snippet fail "fail function"
+fail() {
+	echo "FAIL: \$1"
+	exit 1
+}
+endsnippet
+
+snippet set "safe settings"
+set -euxo pipefail
+endsnippet
+
+snippet #!/bin/bash "script skeleton"
+#!/bin/bash
+
+set -euxo pipefail
+
+trap "cleanup" 0
+cleanup() {}
+
+echo "$(basename "\$0") started:"
+
+$9
+
+echo "$(basename "\$0") finished!"
+endsnippet

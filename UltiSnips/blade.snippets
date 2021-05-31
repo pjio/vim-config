@@ -1,0 +1,41 @@
+priority 4
+extends php
+extends phtml
+
+snippet fore "foreach loop" w
+@foreach($${1:variable} as $${3:value})
+	${9:${VISUAL}}
+@endforeach
+endsnippet
+
+snippet if "if condition" w
+@if($1)
+	${9:${VISUAL}}
+@endif
+endsnippet
+
+snippet ife "if/else block" w
+@if($1)
+	${2:${VISUAL}}
+@else
+	$9
+@endif
+endsnippet
+
+snippet php "@php block" w
+@php
+$9
+@endphp
+endsnippet
+
+snippet { "echo" i
+{{ $1 }}$9
+endsnippet
+
+snippet {! "echo" i
+{!! $1 !!}$9
+endsnippet
+
+snippet @l "@lang()" w
+@lang('$9')
+endsnippet

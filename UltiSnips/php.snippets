@@ -1,0 +1,270 @@
+priority 2
+extends html
+
+# general
+snippet t "$this->" w
+$this->$0
+endsnippet
+
+snippet '(\$[a-zA-Z0-9_]+)' "call member on $variable" r
+`!p snip.rv = match.group(1)`->$9
+endsnippet
+
+snippet '(\$this->[a-zA-Z0-9_]+)' "call member of property" r
+`!p snip.rv = match.group(1)`->$9
+endsnippet
+
+snippet phf "<?php without closing-tag" w
+<?php
+$9
+endsnippet
+
+# control-flow statements
+snippet do "do-while loop" w
+do {
+	${9:${VISUAL}}
+} while ($1);
+endsnippet
+
+snippet while "while loop" w
+while ($1) {
+	${9:${VISUAL}}
+}
+endsnippet
+
+snippet for "for loop" w
+for (\$${2:i} = 0; \$$2 < ${1:count}; \$$2${3:++}) {
+	${9:${VISUAL}}
+}
+endsnippet
+
+snippet fore "foreach loop" w
+foreach ($${1:variable} as $${3:value}) {
+	${9:${VISUAL}}
+}
+endsnippet
+
+snippet "} *ei" "continue with elseif" r
+} elseif ($1) {
+	$2
+}
+endsnippet
+
+# use this snippet with visual mode
+# changes this: $tokenHelper = $tokenParser;
+# to this:      $tokenHelper = () ? $tokenParser : ;
+snippet tif "tenary operator ?:"
+\$${1:${VISUAL/^\$| ?=.*$//g}} = ($2) ? ${3:${VISUAL/^[^=]*= ?|;$//g}} : $4;
+endsnippet
+
+
+# php-functions
+snippet inc "include file" w
+include '$1';
+endsnippet
+
+snippet req "require_once" w
+require_once '$1';
+endsnippet
+
+snippet def "define statement" w
+define('$1', $2);
+endsnippet
+
+
+snippet vd "var_dump" w
+/*** <debug> ***/
+var_dump(array('<pre>var_dump: ' . __METHOD__, date("d.m.Y H:i:s", time()),
+	${VISUAL}$9
+));
+die;
+/*** </debug> ***/
+endsnippet
+
+snippet vdl "var_dump logfile" w
+/*** <debug> ***/
+error_log(__METHOD__ . ": " . preg_replace('/[\n\t ]+/', " ", print_r(array(
+	${VISUAL}$9
+), true)));
+/*** </debug> ***/
+endsnippet
+
+snippet flat "flatten object for debugging" w
+array_map(fn(\$x) => is_scalar(\$x) ? \$x : (is_object(\$x) ? get_class(\$x) : gettype(\$x)), (array) ${1:${VISUAL}})
+endsnippet
+
+# class structure
+snippet nsp "namespace" w
+namespace `!p
+import glob, re, json, os
+
+def get_namespace(path):
+    # first way: from path with consideration of composer.json
+    base_namespace = ""
+    base_path      = path
+    composer_path  = '%s/composer.json' % os.getcwd()
+
+    if os.path.isfile(composer_path):
+        config = json.loads(open(composer_path).read())
+        if "autoload" in config and "psr-4" in config["autoload"]:
+            for ns in config["autoload"]["psr-4"]:
+                ns_path = '%s/%s' % (os.getcwd(), config["autoload"]["psr-4"][ns])
+                if path.find(ns_path) == 0:
+                    base_path = path[len(ns_path):]
+                    base_namespace = ns
+
+            segments = base_path.split('/')[0:-1]
+            segments = [x for x in segments if (len(x.strip()) > 0)]
+
+            return re.sub('\\\$', '', base_namespace + '\\'.join(segments))
+
+    # second way: ask a friendly neighboring file
+    files = glob.glob(path[0:path.rfind('/')] + '/*.php')
+    for file in files:
+        contents = open(file).read()
+        matches = re.findall('namespace\s+([a-zA-Z0-9_\\\\]+)', contents)
+        if matches:
+            return matches[0]
+    return ''
+
+snip.rv = get_namespace(path)
+`;
+
+$9
+endsnippet
+
+snippet cls "class" w
+class ${3:`!p
+snip.rv=(snip.fn.capitalize()[0] + snip.fn[1:]).split('.')[0]
+`}$4
+{
+	$9
+}
+endsnippet
+
+snippet inf "interface" w
+interface ${3:`!p
+snip.rv=(snip.fn.capitalize()[0] + snip.fn[1:]).split('.')[0]
+`}$4
+{
+	$9
+}
+endsnippet
+
+snippet trt "trait" w
+trait ${3:`!p
+snip.rv=(snip.fn.capitalize()[0] + snip.fn[1:]).split('.')[0]
+`}$4
+{
+	$9
+}
+endsnippet
+
+# Works only with original UltiSnips
+snippet pro "property" b
+/** @var $1 */
+${2:private} $${3:`!p s=re.sub('[^a-zA-Z0-9_]', '', t[1]); snip.rv = "" + (s[0].lower() if len(s) > 0 else "") + (s[1:] if len(s) > 1 else "")`};
+endsnippet
+
+# snippet for: /** @var Type $name */
+snippet var "@var"
+/** @var $1 $${2:`!p
+(row, col) = vim.current.window.cursor
+match = re.match('^.*?\$([a-zA-Z0-9_]+)', vim.current.buffer[row])
+if match:
+	snip.rv = match.group(1)
+else:
+	snip.rv = ""
+`} */$9
+endsnippet
+
+snippet con "constructor" b
+public function __construct($1)
+{
+	${2:parent::__construct($1);}$9
+}
+endsnippet
+
+snippet prif "private function" b
+private function $2($3)$4
+{
+	$9
+}
+endsnippet
+
+snippet prisf "private static function" b
+private static function $2($3)$4
+{
+	$9
+}
+endsnippet
+
+snippet prof "protected function" b
+protected function $2($3)$4
+{
+	$9
+}
+endsnippet
+
+snippet prosf "protected static function" b
+protected static function $2($3)$4
+{
+	$9
+}
+endsnippet
+
+snippet pubf "public function" b
+public function $2($3)$4
+{
+	$9
+}
+endsnippet
+
+snippet pubsf "public static function" b
+public static function $2($3)$4
+{
+	$9
+}
+endsnippet
+
+snippet throw "throw Exception" w
+throw new ${1:\RuntimeException}('$2');$9
+endsnippet
+
+snippet @p "@param annotation"
+@param 
+endsnippet
+
+snippet @r "@return annotation"
+@return 
+endsnippet
+
+snippet @t "@throws annotation"
+@throws ${1:\RuntimeException}
+endsnippet
+
+snippet try "try-catch"
+try {
+	${VISUAL}$1
+} catch (${2:\Exception} $e) {
+	$3
+}$9
+endsnippet
+
+snippet [' "array with key"
+['$1' => '$2']$9
+endsnippet
+
+snippet bt "Backtrace" w
+\$backtrace = array_map(function (\$call) { return array_intersect_key(\$call, array_flip(['file', 'line', 'class', 'function'])); }, debug_backtrace());$1
+endsnippet
+
+snippet dd "laravel dd"
+dd(${VISUAL}$1);$9
+endsnippet
+
+snippet func "function" w
+function $1($2)$3 {
+	$9
+}
+endsnippet

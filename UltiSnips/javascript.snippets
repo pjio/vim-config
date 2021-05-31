@@ -1,0 +1,46 @@
+priority 2
+extends html
+
+snippet for "for loop"
+for (let i = 0; i < ${1:x}; i++) {
+	$9
+}
+endsnippet
+
+snippet forEach "forEach loop"
+forEach((${1:item}) => {
+	$9
+});
+endsnippet
+
+snippet "\{\};" "multiline curly brackets with semicolon" r
+{
+	$1
+};$9
+endsnippet
+
+snippet "(\()?\{\}\);?" "object as parameter" r
+`!p snip.rv = '(' if match.group(1) != None else ''`{
+	$1
+});$9
+endsnippet
+
+snippet it "it('test')"
+it('$1', () => {
+	$9
+});
+endsnippet
+
+snippet describe "describe('tests')"
+describe('$1', () => {
+	$9
+});
+endsnippet
+
+snippet alert "alert('');"
+alert('$1');$9
+endsnippet
+
+snippet con "console.log();"
+console.log($1);$9
+endsnippet
